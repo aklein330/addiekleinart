@@ -34,7 +34,7 @@ const groups = [
                 <div>
                   <h3>{data.url ? <a class="link" href={data.url} rel="noopener">{data.title}</a> : data.title}</h3>
                   <p>
-                    {data.venue}, {data.city}
+                    {data.venueUrl ? <a class="link" href={data.venueUrl} rel="noopener">{data.venue}</a> : data.venue}, {data.city}
                   </p>
                 </div>
                 <div class="when">

@@ -27,6 +27,7 @@ const exhibitions = defineCollection({
   schema: z.object({
     title: z.string(),
     venue: z.string(),
+    venueUrl: z.string().url().nullish().or(z.literal('')),
     city: z.string(),
     start: z.coerce.date(),
     end: z.coerce.date().nullish(),

@@ -92,6 +92,7 @@ export default defineConfig({
         fields: [
           { type: 'string', name: 'title', label: 'Title', isTitle: true, required: true },
           { type: 'string', name: 'venue', label: 'Venue', required: true },
+          { type: 'string', name: 'venueUrl', label: 'Venue website (optional)' },
           { type: 'string', name: 'city', label: 'City', required: true },
           { type: 'datetime', name: 'start', label: 'Start date', required: true, ui: { dateFormat: 'MMMM D, YYYY' } },
           { type: 'datetime', name: 'end', label: 'End date', ui: { dateFormat: 'MMMM D, YYYY' } },
@@ -106,7 +107,7 @@ export default defineConfig({
             ],
             required: true,
           },
-          { type: 'string', name: 'url', label: 'Link (optional)' },
+          { type: 'string', name: 'url', label: 'Exhibition page link (optional)' },
         ],
       },
       {
