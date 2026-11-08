@@ -63,7 +63,7 @@ export default defineConfig({
             options: [
               { value: 'available', label: 'Available' },
               { value: 'sold', label: 'Sold' },
-              { value: 'nfs', label: 'Not for sale / private collection' },
+              { value: 'nfs', label: 'Not available' },
             ],
           },
           { type: 'number', name: 'price', label: 'Price (USD)', description: 'Shown when the painting is available.' },

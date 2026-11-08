@@ -12,7 +12,7 @@ export type Artwork = Awaited<ReturnType<typeof getArtworks>>[number];
 
 export const categoryLabel = { landscape: 'Landscapes', animal: 'Animals', otherworldly: 'Otherworldly' } as const;
 
-export const statusLabel = { available: 'Available', sold: 'Sold', nfs: 'Private collection' } as const;
+export const statusLabel = { available: 'Available', sold: 'Sold', nfs: 'Not available' } as const;
 
 export const formatPrice = (n: number) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);

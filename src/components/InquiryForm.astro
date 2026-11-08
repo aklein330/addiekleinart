@@ -4,12 +4,16 @@ import { site } from '../site.config';
 interface Props {
   title: string;
   year?: number | null;
+  printsOnly?: boolean;
 }
 
-const { title, year } = Astro.props;
+const { title, year, printsOnly = false } = Astro.props;
 const label = year ? `${title} (${year})` : title;
 const firstName = site.artistName.split(' ')[0];
-const message = `Hi ${firstName},\n\nI'm interested in "${title}". Could you tell me more about it?\n\nThank you,\n`;
+const ask = printsOnly
+  ? `I'm interested in a print of "${title}". Could you tell me about sizes and pricing?`
+  : `I'm interested in "${title}". Could you tell me more about it?`;
+const message = `Hi ${firstName},\n\n${ask}\n\nThank you,\n`;
 const mailto = `mailto:${site.email}?subject=${encodeURIComponent(`Inquiry: ${label}`)}`;
 ---
 

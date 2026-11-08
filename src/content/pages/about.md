@@ -9,4 +9,4 @@ lede: 'My oil paintings explore the beauty, color, and wonder of the natural wor
 
 I have been painting for five years, working primarily with oils, as I am drawn to their rich colors, versatility, and ability to create dimension, movement, and texture. I enjoy the freedom of building layers and allowing each painting to evolve throughout the creative process.
 
-I have participated in local community art, sharing my work at pop-up events, in retail spaces, and online platforms. My paintings and other artwork have been exhibited in local storefronts and online platforms.
+I have participated in local community art, sharing my work at pop-up events, in retail spaces, and online platforms. My paintings and other artwork have been exhibited in local storefronts and online platforms. I have also donated paintings to nonprofit organizations for auctions at their fundraising galas, helping raise money for causes I care about.

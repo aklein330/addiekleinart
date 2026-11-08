@@ -48,7 +48,7 @@ const ogImage = await getImage({ src: image, width: 1200, format: 'jpg' });
       </dl>
       )}
       <div class="notes"><Content /></div>
-      {status !== 'sold' || prints ? <InquiryForm title={title} year={year} /> : null}
+      {status !== 'sold' || prints ? <InquiryForm title={title} year={year} printsOnly={status === 'sold' || status === 'nfs'} /> : null}
     </aside>
   </article>
 
