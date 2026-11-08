@@ -37,7 +37,7 @@ const ogImage = await getImage({ src: image, width: 1200, format: 'jpg' });
 
     <aside class="details">
       <a class="eyebrow back" href={`/portfolio?category=${category}`}>{categoryLabel[category]}</a>
-      <h1>{title}</h1>
+      <h1 translate="no">{title}</h1>
       {(year || medium || dimensions || status || prints) && (
       <dl>
         {year && (<><dt>Year</dt><dd>{year}</dd></>)}

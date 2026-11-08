@@ -4,12 +4,12 @@ import { site } from '../site.config';
 
 <footer class="site-footer">
   <div class="container inner">
-    <p class="name">{site.artistName}</p>
+    <p class="name" translate="no">{site.artistName}</p>
     <ul>
       <li><a class="link" href={`mailto:${site.email}`}>{site.email}</a></li>
       {site.instagram && <li><a class="link" href={site.instagram} rel="noopener">Instagram</a></li>}
     </ul>
-    <p class="copy">© {new Date().getFullYear()} {site.artistName}. All works copyright the artist.</p>
+    <p class="copy">© {new Date().getFullYear()} <span translate="no">{site.artistName}</span>. All works copyright the artist.</p>
   </div>
 </footer>
 
