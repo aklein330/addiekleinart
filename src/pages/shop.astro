@@ -14,13 +14,26 @@ const available = (await getArtworks()).filter((a) => a.data.status === 'availab
     {
       !site.shopEnabled && (
         <p class="lede">
-          Online purchasing is coming soon. In the meantime, <a class="link" href="/contact">get in touch</a> to
-          acquire any of the works below.
+          Online purchasing is coming soon. In the meantime,{' '}
+          {available.length ? (
+            <>
+              <a class="link" href="/contact">get in touch</a> to acquire any of the works below.
+            </>
+          ) : (
+            <>
+              explore the <a class="link" href="/portfolio">portfolio</a> and{' '}
+              <a class="link" href="/contact">get in touch</a> about any piece that catches your eye.
+            </>
+          )}
         </p>
       )
     }
   </header>
-  <section class="container">
-    <Gallery artworks={available} showPrice />
-  </section>
+  {
+    available.length > 0 && (
+      <section class="container">
+        <Gallery artworks={available} showPrice />
+      </section>
+    )
+  }
 </Base>
