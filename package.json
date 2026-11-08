@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "tinacms dev -c \"astro dev\"",
-    "build": "tinacms build && astro build",
+    "build": "tinacms build && node scripts/patch-admin.mjs && astro build",
     "build:site": "astro build",
     "preview": "astro preview"
   },
