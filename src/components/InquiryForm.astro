@@ -17,7 +17,7 @@ const mailto = `mailto:${site.email}?subject=${encodeURIComponent(`Inquiry: ${la
   <button type="button" class="button toggle" aria-expanded="false" aria-controls="inquiry-panel">Inquire</button>
 
   <div id="inquiry-panel" class="panel" hidden>
-    <form name="inquiry" method="POST" action="/thanks" data-netlify="true" netlify-honeypot="company">
+    <form name="inquiry" method="POST" action="/thanks/" data-netlify="true" netlify-honeypot="company">
       <input type="hidden" name="form-name" value="inquiry" />
       <input type="hidden" name="painting" value={label} />
       <p class="sr-only"><label>Leave blank <input name="company" tabindex="-1" autocomplete="off" /></label></p>
