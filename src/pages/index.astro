@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Gallery from '../components/Gallery.astro';
 import { getArtworks } from '../lib/artworks';
@@ -13,7 +13,7 @@ const [hero, ...selected] = featured.length ? featured : artworks;
 <Base>
   <section class="hero container">
     <a href={`/portfolio/${hero.id}`} class="hero-image">
-      <Image src={hero.data.image} alt={hero.data.alt} widths={[800, 1400, 2000]} sizes="100vw" loading="eager" />
+      <Picture src={hero.data.image} alt={hero.data.alt} formats={['avif']} fallbackFormat="webp" quality={70} widths={[800, 1400, 2000]} sizes="100vw" loading="eager" />
     </a>
     <div class="hero-caption">
       <span>{[hero.data.title, hero.data.year].filter(Boolean).join(', ')}</span>
@@ -44,6 +44,10 @@ const [hero, ...selected] = featured.length ? featured : artworks;
     display: block;
     overflow: hidden;
     background: var(--paper-deep);
+  }
+
+  .hero-image :global(picture) {
+    display: block;
   }
 
   .hero-image :global(img) {

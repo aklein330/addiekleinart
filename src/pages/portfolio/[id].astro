@@ -1,5 +1,5 @@
 ---
-import { Image, getImage } from 'astro:assets';
+import { Picture, getImage } from 'astro:assets';
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import InquiryForm from '../../components/InquiryForm.astro';
@@ -27,12 +27,25 @@ const { artwork, prev, next } = Astro.props;
 const { title, image, alt, year, medium, dimensions, category, status, price, prints } = artwork.data;
 const { Content } = await render(artwork);
 const ogImage = await getImage({ src: image, width: 1200, format: 'jpg' });
+const fullSize = await getImage({ src: image, width: image.width, format: 'webp', quality: 85 });
 ---
 
 <Base title={title} description={[title, year, medium, dimensions].filter(Boolean).join(' · ')} image={ogImage.src}>
   <article class="container artwork">
     <figure>
-      <Image src={image} alt={alt} widths={[800, 1400, 2000]} sizes="(max-width: 900px) 100vw, 65vw" loading="eager" />
+      <Picture
+        src={image}
+        alt={alt}
+        formats={['avif']}
+        fallbackFormat="webp"
+        quality={70}
+        widths={[800, 1400, 2000]}
+        sizes="(max-width: 900px) 100vw, 65vw"
+        loading="eager"
+      />
+      <figcaption>
+        <a class="full" href={fullSize.src} target="_blank" rel="noopener">View full size</a>
+      </figcaption>
     </figure>
 
     <aside class="details">
@@ -70,6 +83,30 @@ const ogImage = await getImage({ src: image, width: 1200, format: 'jpg' });
   figure {
     margin: 0;
     background: var(--paper-deep);
+  }
+
+  figure :global(picture) {
+    display: block;
+  }
+
+  figcaption {
+    padding: 0.8rem 0 0;
+    background: var(--paper);
+    text-align: right;
+  }
+
+  .full {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 2px;
+  }
+
+  .full:hover {
+    color: var(--ink);
+    border-color: var(--ink);
   }
 
   figure :global(img) {
