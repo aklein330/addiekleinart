@@ -1,8 +1,8 @@
 ---
 title: About
 portrait: /assets/addie-klein.jpg
-portraitAlt: Portrait of Addie Klein, smiling, in front of green leaves
-lede: "My oil paintings explore the beauty, color, and wonder of the natural world. Inspired by landscapes, animals, and the magic of everyday surroundings, I combine bold color, expressive brushstrokes, and rich, layered textures into my work. Through each painting, I hope to evoke a sense of curiosity, imagination, and connections to the world around us."
+portraitAlt: Portrait of Addie Klein in front of green leaves
+lede: 'My oil paintings explore the beauty, color, and wonder of the natural world. Inspired by landscapes, animals, and the magic of everyday surroundings, I combine bold color, expressive brushstrokes, and rich, layered textures into my work. Through each painting, I hope to evoke a sense of curiosity, imagination, and connections to the world around us.'
 ---
 
 ## About me
