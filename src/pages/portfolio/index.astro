@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import Gallery from '../../components/Gallery.astro';
+import { getArtworks } from '../../lib/artworks';
+
+const artworks = await getArtworks();
+---
+
+<Base title="Portfolio" description="Landscape and wildlife paintings.">
+  <header class="page-header container">
+    <p class="eyebrow">Portfolio</p>
+    <h1>Paintings</h1>
+  </header>
+  <section class="container">
+    <Gallery artworks={artworks} filters />
+  </section>
+</Base>

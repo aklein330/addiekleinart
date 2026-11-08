@@ -1,0 +1,153 @@
+---
+import { Image, getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import InquiryForm from '../../components/InquiryForm.astro';
+import { getArtworks, categoryLabel, statusLabel, formatPrice, type Artwork } from '../../lib/artworks';
+
+export async function getStaticPaths() {
+  const artworks = await getArtworks();
+  return artworks.map((artwork, i) => ({
+    params: { id: artwork.id },
+    props: {
+      artwork,
+      prev: artworks[i - 1] ?? artworks.at(-1),
+      next: artworks[i + 1] ?? artworks[0],
+    },
+  }));
+}
+
+interface Props {
+  artwork: Artwork;
+  prev: Artwork;
+  next: Artwork;
+}
+
+const { artwork, prev, next } = Astro.props;
+const { title, image, alt, year, medium, dimensions, category, status, price, prints } = artwork.data;
+const { Content } = await render(artwork);
+const ogImage = await getImage({ src: image, width: 1200, format: 'jpg' });
+---
+
+<Base title={title} description={[title, year, medium, dimensions].filter(Boolean).join(' · ')} image={ogImage.src}>
+  <article class="container artwork">
+    <figure>
+      <Image src={image} alt={alt} widths={[800, 1400, 2000]} sizes="(max-width: 900px) 100vw, 65vw" loading="eager" />
+    </figure>
+
+    <aside class="details">
+      <a class="eyebrow back" href={`/portfolio?category=${category}`}>{categoryLabel[category]}</a>
+      <h1>{title}</h1>
+      {(year || medium || dimensions || status || prints) && (
+      <dl>
+        {year && (<><dt>Year</dt><dd>{year}</dd></>)}
+        {medium && (<><dt>Medium</dt><dd>{medium}</dd></>)}
+        {dimensions && (<><dt>Size</dt><dd>{dimensions}</dd></>)}
+        {status && (<><dt>Status</dt><dd>{status === 'available' && price ? `${statusLabel[status]} · ${formatPrice(price)}` : statusLabel[status]}</dd></>)}
+        {prints && (<><dt>Prints</dt><dd>Available</dd></>)}
+      </dl>
+      )}
+      <div class="notes"><Content /></div>
+      {status !== 'sold' || prints ? <InquiryForm title={title} year={year} /> : null}
+    </aside>
+  </article>
+
+  <nav class="container pager" aria-label="More works">
+    <a href={`/portfolio/${prev.id}`}><span class="eyebrow">Previous</span>{prev.data.title}</a>
+    <a href={`/portfolio/${next.id}`} class="next"><span class="eyebrow">Next</span>{next.data.title}</a>
+  </nav>
+</Base>
+
+<style>
+  .artwork {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+    padding-top: clamp(2rem, 5vw, 4rem);
+  }
+
+  figure {
+    margin: 0;
+    background: var(--paper-deep);
+  }
+
+  figure :global(img) {
+    width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+  }
+
+  .details {
+    position: sticky;
+    top: 120px;
+  }
+
+  .back:hover {
+    color: var(--ink);
+  }
+
+  h1 {
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    gap: 0.5rem 1rem;
+    margin: 2rem 0;
+    padding-block: 1.5rem;
+    border-block: 1px solid var(--line);
+    font-size: 0.9rem;
+  }
+
+  dt {
+    color: var(--muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding-top: 0.2rem;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  .notes {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    margin-top: clamp(4rem, 8vw, 6rem);
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+    font-family: var(--serif);
+    font-size: 1.25rem;
+  }
+
+  .pager a {
+    display: grid;
+  }
+
+  .pager .eyebrow {
+    margin-bottom: 0.3rem;
+  }
+
+  .next {
+    text-align: right;
+  }
+
+  @media (max-width: 900px) {
+    .artwork {
+      grid-template-columns: 1fr;
+    }
+
+    .details {
+      position: static;
+    }
+  }
+</style>

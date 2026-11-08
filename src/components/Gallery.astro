@@ -1,0 +1,89 @@
+---
+import ArtworkCard from './ArtworkCard.astro';
+import { categoryLabel, type Artwork } from '../lib/artworks';
+
+interface Props {
+  artworks: Artwork[];
+  filters?: boolean;
+  showPrice?: boolean;
+  layout?: 'masonry' | 'row';
+}
+
+const { artworks, filters = false, showPrice = false, layout = 'masonry' } = Astro.props;
+---
+
+<div class="gallery-wrap">
+  {
+    filters && (
+      <div class="filters" role="group" aria-label="Filter works">
+        <button type="button" data-filter="all" aria-pressed="true">All</button>
+        {Object.entries(categoryLabel).map(([key, label]) => (
+          <button type="button" data-filter={key} aria-pressed="false">
+            {label}
+          </button>
+        ))}
+      </div>
+    )
+  }
+  <div class:list={['gallery', layout]}>
+    {artworks.map((artwork, i) => <ArtworkCard artwork={artwork} eager={i < 3} showPrice={showPrice} />)}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.gallery-wrap').forEach((wrap) => {
+    const buttons = wrap.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const cards = wrap.querySelectorAll<HTMLElement>('[data-category]');
+    const apply = (filter: string) => {
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+      cards.forEach((c) => (c.hidden = filter !== 'all' && c.dataset.category !== filter));
+    };
+    buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.filter!)));
+    const initial = new URLSearchParams(location.search).get('category');
+    if (initial && wrap.querySelector(`[data-filter="${initial}"]`)) apply(initial);
+  });
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .filters button {
+    font: inherit;
+    font-size: 0.74rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    padding: 0.3rem 0;
+    cursor: pointer;
+  }
+
+  .filters button[aria-pressed='true'],
+  .filters button:hover {
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .gallery {
+    columns: 3 300px;
+    column-gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .gallery.row {
+    columns: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 0 clamp(1.5rem, 3vw, 2.5rem);
+    align-items: start;
+  }
+
+  .gallery :global([hidden]) {
+    display: none;
+  }
+</style>

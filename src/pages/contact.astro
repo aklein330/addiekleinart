@@ -1,0 +1,132 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../site.config';
+
+const instagramHandle = site.instagram && `@${new URL(site.instagram).pathname.split('/').filter(Boolean)[0]}`;
+---
+
+<Base title="Contact" description={`Get in touch with ${site.artistName} about original work, prints, or commissions.`}>
+  <section class="container contact">
+    <div>
+      <p class="eyebrow">Contact</p>
+      <h1>Get in touch</h1>
+      <p class="lede">For inquiries about original paintings, prints, commissions, or exhibitions.</p>
+      <dl>
+        <dt>Email</dt>
+        <dd><a class="link" href={`mailto:${site.email}`}>{site.email}</a></dd>
+        {site.location && (<><dt>Studio</dt><dd>{site.location}</dd></>)}
+        {site.instagram && (<><dt>Instagram</dt><dd><a class="link" href={site.instagram} rel="noopener">{instagramHandle}</a></dd></>)}
+      </dl>
+    </div>
+
+    <form name="contact" method="POST" action="/thanks" data-netlify="true" netlify-honeypot="company">
+      <input type="hidden" name="form-name" value="contact" />
+      <p class="sr-only"><label>Leave blank <input name="company" tabindex="-1" autocomplete="off" /></label></p>
+      <label>
+        <span>Name</span>
+        <input name="name" required autocomplete="name" />
+      </label>
+      <label>
+        <span>Email</span>
+        <input name="email" type="email" required autocomplete="email" />
+      </label>
+      <label>
+        <span>Regarding</span>
+        <select name="topic">
+          <option>An original painting</option>
+          <option>Prints</option>
+          <option>A commission</option>
+          <option>Exhibitions &amp; press</option>
+          <option>Something else</option>
+        </select>
+      </label>
+      <label>
+        <span>Message</span>
+        <textarea name="message" rows="6" required></textarea>
+      </label>
+      <button class="button" type="submit">Send message</button>
+    </form>
+  </section>
+</Base>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 7vw, 7rem);
+    padding-top: clamp(3rem, 7vw, 5rem);
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 0.7rem 1rem;
+    margin-top: 2.5rem;
+    font-size: 0.95rem;
+  }
+
+  dt {
+    color: var(--muted);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding-top: 0.25rem;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  form {
+    display: grid;
+    gap: 1.6rem;
+    align-content: start;
+  }
+
+  label {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  label span {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: var(--ink);
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 0.6rem 0;
+    border-radius: 0;
+    transition: border-color 0.2s;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--ink);
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  button {
+    justify-self: start;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 800px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

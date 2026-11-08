@@ -1,0 +1,177 @@
+---
+import { site } from '../site.config';
+
+interface Props {
+  title: string;
+  year?: number | null;
+}
+
+const { title, year } = Astro.props;
+const label = year ? `${title} (${year})` : title;
+const firstName = site.artistName.split(' ')[0];
+const message = `Hi ${firstName},\n\nI'm interested in "${title}". Could you tell me more about it?\n\nThank you,\n`;
+const mailto = `mailto:${site.email}?subject=${encodeURIComponent(`Inquiry: ${label}`)}`;
+---
+
+<div class="inquiry">
+  <button type="button" class="button toggle" aria-expanded="false" aria-controls="inquiry-panel">Inquire</button>
+
+  <div id="inquiry-panel" class="panel" hidden>
+    <form name="inquiry" method="POST" action="/thanks" data-netlify="true" netlify-honeypot="company">
+      <input type="hidden" name="form-name" value="inquiry" />
+      <input type="hidden" name="painting" value={label} />
+      <p class="sr-only"><label>Leave blank <input name="company" tabindex="-1" autocomplete="off" /></label></p>
+      <label>
+        <span>Name</span>
+        <input name="name" required autocomplete="name" />
+      </label>
+      <label>
+        <span>Email</span>
+        <input name="email" type="email" required autocomplete="email" />
+      </label>
+      <label>
+        <span>Message</span>
+        <textarea name="message" rows="6" required>{message}</textarea>
+      </label>
+      <div class="actions">
+        <button class="button" type="submit">Send</button>
+        <button class="cancel" type="button">Cancel</button>
+      </div>
+      <p class="error" role="alert" hidden>
+        Sorry, your message couldn't be sent. Please try again or email <a class="link" href={mailto}>{site.email}</a>.
+      </p>
+    </form>
+    <p class="success" role="status" hidden>Thank you — your message has been sent. {firstName} will be in touch soon.</p>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.inquiry').forEach((root) => {
+    const toggle = root.querySelector<HTMLButtonElement>('.toggle')!;
+    const panel = root.querySelector<HTMLElement>('.panel')!;
+    const form = root.querySelector<HTMLFormElement>('form')!;
+    const submit = form.querySelector<HTMLButtonElement>('[type="submit"]')!;
+    const error = form.querySelector<HTMLElement>('.error')!;
+    const success = root.querySelector<HTMLElement>('.success')!;
+
+    const setOpen = (open: boolean) => {
+      panel.hidden = !open;
+      toggle.hidden = open;
+      toggle.setAttribute('aria-expanded', String(open));
+      if (open) form.querySelector<HTMLInputElement>('[name="name"]')!.focus();
+      else toggle.focus();
+    };
+
+    toggle.addEventListener('click', () => setOpen(true));
+    root.querySelector('.cancel')!.addEventListener('click', () => setOpen(false));
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      error.hidden = true;
+      submit.disabled = true;
+      submit.textContent = 'Sending…';
+      try {
+        const body = new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString();
+        const res = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body,
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.hidden = true;
+        success.hidden = false;
+      } catch {
+        error.hidden = false;
+        submit.disabled = false;
+        submit.textContent = 'Send';
+      }
+    });
+  });
+</script>
+
+<style>
+  .panel {
+    border-top: 1px solid var(--line);
+    padding-top: 1.5rem;
+  }
+
+  form {
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  label {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  label span {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  input,
+  textarea {
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--ink);
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    padding: 0.5rem 0;
+    transition: border-color 0.2s;
+  }
+
+  textarea {
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--ink);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .cancel {
+    font: inherit;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .cancel:hover {
+    color: var(--ink);
+  }
+
+  .button:disabled {
+    opacity: 0.5;
+    cursor: wait;
+  }
+
+  .error {
+    margin: 0;
+    font-size: 0.88rem;
+    color: #a3432f;
+  }
+
+  .success {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+</style>

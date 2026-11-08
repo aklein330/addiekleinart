@@ -1,0 +1,59 @@
+---
+import { site } from '../site.config';
+---
+
+<footer class="site-footer">
+  <div class="container inner">
+    <p class="name">{site.artistName}</p>
+    <ul>
+      <li><a class="link" href={`mailto:${site.email}`}>{site.email}</a></li>
+      {site.instagram && <li><a class="link" href={site.instagram} rel="noopener">Instagram</a></li>}
+    </ul>
+    <p class="copy">© {new Date().getFullYear()} {site.artistName}. All works copyright the artist.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    margin-top: clamp(4rem, 10vw, 8rem);
+    padding-block: 3rem;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  .inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem 2rem;
+    align-items: baseline;
+  }
+
+  .name {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .copy {
+    grid-column: 1 / -1;
+    margin: 1rem 0 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  @media (max-width: 600px) {
+    .inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

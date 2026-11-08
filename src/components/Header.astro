@@ -1,0 +1,124 @@
+---
+import { site, nav } from '../site.config';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <a href="/" class="brand">{site.artistName}</a>
+    <button type="button" class="menu-button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span>
+    </button>
+    <nav id="site-nav" aria-label="Main">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.menu-button')!;
+  button.addEventListener('click', () => {
+    button.setAttribute('aria-expanded', String(button.getAttribute('aria-expanded') !== 'true'));
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid transparent;
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 84px;
+  }
+
+  .brand {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    letter-spacing: 0.04em;
+  }
+
+  ul {
+    display: flex;
+    gap: 2.4rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav a {
+    font-size: 0.74rem;
+    font-weight: 450;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding-block: 0.4rem;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  nav a:hover,
+  nav a[aria-current='page'] {
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .menu-button {
+    display: none;
+  }
+
+  @media (max-width: 760px) {
+    .menu-button {
+      display: grid;
+      gap: 7px;
+      padding: 10px 0 10px 10px;
+      background: none;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .menu-button span {
+      display: block;
+      width: 26px;
+      height: 1px;
+      background: var(--ink);
+    }
+
+    nav {
+      display: none;
+      position: absolute;
+      inset: 84px 0 auto;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      padding: 1.5rem var(--gutter) 2rem;
+    }
+
+    ul {
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    [aria-expanded='true'] + nav {
+      display: block;
+    }
+  }
+</style>
