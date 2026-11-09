@@ -2,7 +2,7 @@ import { getCollection } from 'astro:content';
 import { resolveImage } from './images';
 
 export async function getArtworks() {
-  const all = await getCollection('artworks');
+  const all = await getCollection('artworks', (entry) => entry.data.visible);
   return all
     .map((entry) => ({ ...entry, data: { ...entry.data, image: resolveImage(entry.data.image) } }))
     .sort((a, b) => a.data.order - b.data.order || (b.data.year ?? 0) - (a.data.year ?? 0));

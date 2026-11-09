@@ -31,7 +31,7 @@ export default defineConfig({
         ui: {
           filename: { readonly: true, slugify: (values) => slugify(values?.title) },
         },
-        defaultItem: () => ({ category: 'animal', order: 100, year: new Date().getFullYear() }),
+        defaultItem: () => ({ category: 'animal', visible: true, order: 100, year: new Date().getFullYear() }),
         fields: [
           { type: 'string', name: 'title', label: 'Title', isTitle: true, required: true },
           { type: 'image', name: 'image', label: 'Image', required: true },
@@ -68,6 +68,12 @@ export default defineConfig({
           },
           { type: 'number', name: 'price', label: 'Price (USD)', description: 'Shown when the painting is available.' },
           { type: 'boolean', name: 'prints', label: 'Prints available' },
+          {
+            type: 'boolean',
+            name: 'visible',
+            label: 'Show on website',
+            description: 'Turn off to hide this painting everywhere on the site without deleting it.',
+          },
           { type: 'boolean', name: 'featured', label: 'Feature on home page' },
           {
             type: 'number',

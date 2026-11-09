@@ -8,6 +8,7 @@ medium: Oil on canvas
 dimensions: "18 × 24 in"
 status: nfs
 prints: true
+visible: false
 featured: false
 order: 40
 ---

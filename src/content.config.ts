@@ -14,6 +14,7 @@ const artworks = defineCollection({
     medium: z.string().nullish(),
     dimensions: z.string().nullish(),
     category: z.enum(['landscape', 'animal', 'otherworldly']),
+    visible: z.boolean().default(true),
     featured: z.boolean().default(false),
     order: z.number().default(100),
     status: z.enum(['available', 'sold', 'nfs']).nullish(),
